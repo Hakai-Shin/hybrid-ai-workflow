@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hybrid-ai:contract:error:v1",
+  "title": "API Error (RFC 7807 problem+json)",
+  "description": "Standard error format for all REST APIs on both sides. Follows RFC 7807.",
+  "type": "object",
+  "required": [
+    "type",
+    "title",
+    "status",
+    "detail"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "format": "uri",
+      "description": "URI identifying the error type. e.g. 'https://errors.hybrid-ai.example/schema-validation'"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short, human-readable summary of the problem."
+    },
+    "status": {
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599,
+      "description": "HTTP status code."
+    },
+    "detail": {
+      "type": "string",
+      "description": "Human-readable explanation specific to this occurrence."
+    },
+    "trace_id": {
+      "type": "string",
+      "description": "The trace ID for correlation. Always present."
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pointer": {
+            "type": "string",
+            "description": "JSON Pointer to the field that caused the error."
+          },
+          "code": {
+            "type": "string",
+            "description": "Machine-readable error code."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hybrid-ai:contract:artifact:v1",
+  "title": "Artifact Envelope",
+  "description": "The de-identified artifact pushed from enterprise to cloud. Contains only redacted text and metadata — never raw documents or PHI.",
+  "type": "object",
+  "required": [

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hybrid-ai:contract:pubsub-step-envelope:v1",
+  "title": "Pub/Sub Step Envelope",
+  "description": "Message envelope published to Pub/Sub topics when a workflow step needs to execute, or when a step has completed.",
+  "type": "object",
+  "required": [
+    "workflow_id",
+    "document_id",
+    "trace_id",
+    "step_name",
+    "status",
+    "attempt"
+  ],
+  "properties": {
+    "workflow_id": {
+      "type": "string",
+      "pattern": "^wf_01[A-Z0-9]{16,26}$",
+      "description": "Cloud-side ULID identifying the workflow."
+    },
+    "document_id": {
+      "type": "string",
+      "description": "Enterprise-side ULID for correlation."
+    },
+    "trace_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32}$",
+      "description": "W3C traceparent trace-id."
+    },
+    "step_name": {
+      "$ref": "workflow-step.v1.json#/$defs/step_name"
+    },
+    "status": {
+      "$ref": "workflow-step.v1.json#/$defs/step_status"
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Retry attempt number. Start at 1."
+    },
+    "artifact_ref": {
+      "type": "string",
+      "description": "GCS URI to the artifact body. Workers fetch this rather than inlining the text."
+    },
+    "result": {
+      "type": "object",
+      "description": "Step-specific result payload. Present only when status is DONE."
+    },
+    "error": {
+      "type": "object",
+      "description": "Error details. Present only when status is FAILED.",
+      "properties": {
+        "message": { "type": "string" },
+        "type": { "type": "string" }
+      }
+    },
+    "scheduled_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this message was scheduled."
+    },
+    "published_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this message was published."
+    }
+  }
+}

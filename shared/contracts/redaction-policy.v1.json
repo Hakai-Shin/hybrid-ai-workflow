@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hybrid-ai:contract:redaction-policy:v1",
+  "title": "Redaction Policy",
+  "description": "Identifies the redaction policy applied to a document and the set of redactor engines activated.",
+  "type": "object",
+  "required": [
+    "policy_id",
+    "redactors"
+  ],
+  "properties": {
+    "policy_id": {
+      "type": "string",
+      "enum": ["phi-strict-v1", "phi-minimal-v1"],
+      "description": "phi-strict-v1 enables all redactors. phi-minimal-v1 enables regex only."
+    },
+    "redactors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["regex", "presidio-analyzer"]
+      },
+      "description": "List of redactor engines that were applied."
+    },
+    "patterns": {
+      "type": "object",
+      "description": "For regex redactor: the list of patterns activated.",
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

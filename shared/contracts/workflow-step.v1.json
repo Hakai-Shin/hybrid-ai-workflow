@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hybrid-ai:contract:workflow-step:v1",
+  "title": "Workflow Step Definitions",
+  "description": "Enumerations for workflow step names and statuses. Referenced by other schemas via $ref.",
+  "$defs": {
+    "step_name": {
+      "type": "string",
+      "enum": [
+        "classify",
+        "extract-entities",
+        "summarize",
+        "index-search"
+      ],
+      "description": "The four steps in the enrichment workflow, in order."
+    },
+    "step_status": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "RUNNING",
+        "DONE",
+        "FAILED",
+        "SKIPPED"
+      ],
+      "description": "Status of a workflow step."
+    },
+    "workflow_status": {
+      "type": "string",
+      "enum": [
+        "ACCEPTED",
+        "RUNNING",
+        "ENRICHED",
+        "PARTIAL",
+        "FAILED",
+        "REJECTED"
+      ],
+      "description": "Status of the entire workflow."
+    }
+  }
+}
