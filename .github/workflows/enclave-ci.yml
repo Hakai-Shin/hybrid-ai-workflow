@@ -1,0 +1,39 @@
+name: Enclave CI
+
+on:
+  pull_request:
+    paths:
+      - "enclave/**"
+      - "presidio-sidecar/**"
+
+jobs:
+  test-enclave:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: temurin
+          cache: maven
+      - name: Run Maven tests
+        run: cd enclave && mvn -q verify
+      - name: Build enclave Docker image
+        run: docker build enclave/
+
+  test-presidio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: cd presidio-sidecar && pip install -r requirements.txt
+      - name: Download spaCy model
+        run: python -m spacy download en_core_web_lg
+      - name: Run pytest
+        run: cd presidio-sidecar && pytest -v
+      - name: Build Presidio Docker image
+        run: docker build presidio-sidecar/

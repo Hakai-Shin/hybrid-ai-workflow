@@ -1,0 +1,41 @@
+name: Cloud CI
+
+on:
+  pull_request:
+    paths:
+      - "cloud/**"
+
+jobs:
+  workers:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        worker: [dispatcher, classifier, extractor, summariser, embedder]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+          cache-dependency-path: cloud/workers/${{ matrix.worker }}/go.mod
+      - name: Run tests
+        run: |
+          cd cloud/workers/${{ matrix.worker }}
+          go mod download
+          go test ./...
+      - name: Build Docker image
+        run: docker build cloud/workers/${{ matrix.worker }}/
+
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~1.6"
+      - name: Terraform format check
+        run: cd cloud/terraform && terraform fmt -check -recursive
+      - name: Terraform init (no backend)
+        run: cd cloud/terraform && terraform init -backend=false
+      - name: Terraform validate
+        run: cd cloud/terraform && terraform validate
