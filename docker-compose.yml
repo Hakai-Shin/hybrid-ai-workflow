@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  enclave:
+    build: ./enclave
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+      - ./secrets:/secrets:ro
+    env_file: .env
+    depends_on:
+      presidio-sidecar:
+        condition: service_healthy
+    environment:
+      PRESIDIO_URL: http://presidio-sidecar:8080
+
+  presidio-sidecar:
+    build: ./presidio-sidecar
+    ports:
+      - "8081:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

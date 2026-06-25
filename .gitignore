@@ -1,0 +1,42 @@
+# Secrets — never commit
+.env
+secrets/
+*.json.key
+service-account*.json
+
+# Java
+enclave/target/
+*.class
+*.jar
+!pom.xml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Go
+cloud/workers/*/vendor/
+
+# Terraform state — use remote backend in production
+cloud/terraform/.terraform/
+cloud/terraform/.terraform.lock.hcl
+cloud/terraform/terraform.tfstate
+cloud/terraform/terraform.tfstate.backup
+cloud/terraform/*.tfvars
+
+# Local data
+data/raw/
+data/enclave-db*
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
