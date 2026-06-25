@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"os"
 
+	"time"
+
 	cloudtasks "cloud.google.com/go/cloudtasks/apiv2"
 	taskspb "cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb"
 	"google.golang.org/protobuf/types/known/durationpb"
@@ -140,7 +142,7 @@ func (h *Handler) enqueue(ctx context.Context, queueName, targetURL string, payl
 					},
 				},
 			},
-			DispatchDeadline: durationpb.New(600e9), // 10 minutes
+			DispatchDeadline: durationpb.New(10 * time.Minute),
 		},
 	}
 

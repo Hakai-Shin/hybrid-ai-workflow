@@ -1,0 +1,15 @@
+# Normalize line endings: store LF in repo, checkout with native endings
+* text=auto
+
+# Force LF for scripts and configs (must stay LF even on Windows)
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+Makefile text eol=lf
+
+# Binary files — no line-ending conversion
+*.jar binary
+*.png binary
+*.pdf binary
+*.tiff binary

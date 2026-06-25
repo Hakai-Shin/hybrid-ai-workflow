@@ -34,10 +34,6 @@ class PackagerServiceTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        var mockFuture = new com.google.api.gax.rpc.ApiCallContext() {
-            // intentionally empty — use ApiFutures.immediateFuture below
-        };
-
         com.google.api.core.ApiFuture<String> future =
             com.google.api.core.ApiFutures.immediateFuture("msg-id-123");
         when(publisher.publish(any(PubsubMessage.class))).thenReturn(future);
